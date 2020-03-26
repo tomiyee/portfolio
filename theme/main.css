@@ -1,0 +1,10 @@
+/* Aligns the children to the center of the element with this class */
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-container {
+  color: white;
+}
