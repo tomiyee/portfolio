@@ -72,7 +72,9 @@ class Boid {
   }
 
   /**
-   * localFlock - description
+   * localFlock - Finds the subset of boids that are within FLOCK_RADIUS of this boid
+   * Does NOT find the edge cases, where a boid is on the edge and could potentially
+   * be influenced by one on the opposite edge.
    *
    * @param  {Boid[]} boids A list of boids
    * @return {Boid[]}       A subset of boids which are within FLOCK_RADIUS of this
@@ -85,6 +87,13 @@ class Boid {
     return local;
   }
 
+  /**
+   * align - First force, wehre the boid will attempt to align its velocity with
+   * the average of its local flock.
+   *
+   * @param  {Vector} local A list of boids local to this one
+   * @return {Vector}       A vector repr this force's influence
+   */
   align (local) {
     let force = new Vector(0,0);
     for (let boid of local) {
@@ -94,22 +103,34 @@ class Boid {
     return force.scale(A_FACTOR);
   }
 
+  /**
+   * cohesion - Second force, wehre the boid will attempt to get closer to the
+   * "center of gravity" of its local flock.
+   *
+   * @param  {Vector} local A list of boids local to this one
+   * @return {Vector}       A vector repr this force's influence
+   */
   cohesion (local) {
     let avg = new Vector(0,0);
     for (let boid of local)
       avg.add(boid.position, true);
     avg.scale(1/local.length);
-
     let force = avg.subtract(this.position);
-    force.setMax(2)
+    force.setMax(2);
     return force.scale(C_FACTOR);
   }
 
+  /**
+   * repulsion - Third force, wehre the boid will attempt to get further from the
+   * "center of gravity" of its local flock to prevent "collisions" or overlap
+   *
+   * @param  {Vector} local A list of boids local to this one
+   * @return {Vector}       A vector repr this force's influence
+   */
   repulsion (local) {
     let force = new Vector (0,0);
     for (let boid of local) {
       let displ = this.position.subtract(boid.position);
-
       force.x += 1 / displ.x;
       force.y += 1 / displ.y;
     }
@@ -124,24 +145,28 @@ class Boid {
   update (boids) {
     let local = this.localFlock (boids);
     if (local.length > 0){
+      // Clears any existing acceleration
+      this.acceleration.scale(0);
+      // Calculates the sum of the three forces described above
       let forceAlign = this.align(local);
       let forceCohesion = this.cohesion (local);
       let forceRepulsion = this.repulsion (local);
-      this.acceleration.scale(0);
       this.acceleration.add(forceAlign, true);
       this.acceleration.add(forceCohesion, true);
       this.acceleration.add(forceRepulsion, true);
+      // Applies this acceleration to the boid's velocity instantaneously
       this.velocity.add(this.acceleration, true);
     }
     this.velocity.setLength(BOID_SPEED);
     this.velocity.length() < 3 && console.log(this.velocity.length())
     this.position.add(this.velocity, true);
 
+    // Loop around Horizontally
     if (this.position.x > WIDTH)
       this.position.x -= WIDTH;
     else if (this.position.x < 0)
       this.position.x += WIDTH;
-
+    // Loop around Vertically
     if (this.position.y > HEIGHT)
       this.position.y -= HEIGHT;
     else if (this.position.y < 0)
