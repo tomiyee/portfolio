@@ -4,15 +4,16 @@ let WIDTH = 900, HEIGHT = 600;
 
 const BG_COLOR = "#141414";
 const BOID_COLOR = rgb(255/2, 255/2, 255/2);
-const BOID_SPEED = 7;
-const NUM_BOIDS = window.innerWidth * window.innerHeight / 10000*4;
+const BOID_SPEED = 8;
+const NUM_BOIDS = (window.innerWidth * window.innerHeight) / (100*100) * 2;
 const BOID_RADIUS = 6;
 let A_FACTOR = 0.5;
 let C_FACTOR = 0.04;
 let R_FACTOR = 1.4
 let boids = [];
 let canvas, ctx;
-
+let paused = false;
+let updateID;
 window.onload = start;
 
 function start () {
@@ -30,7 +31,13 @@ function start () {
   ctx = canvas.getContext('2d');
   for (let i = 0; i < NUM_BOIDS; i++)
     boids.push(new Boid());
-  setInterval (update, 1000/FPS);
+  window.addEventListener("keydown", (e) => {
+    if (e.keyCode == Keys.P) {
+      paused ? (updateID = setInterval(update, 1000 / FPS)) : clearInterval(updateID);
+      paused = !paused;
+    }
+  });
+  updateID = setInterval (update, 1000/FPS);
 }
 
 /**
