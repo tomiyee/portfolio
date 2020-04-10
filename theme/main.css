@@ -8,3 +8,20 @@
 .hero-container {
   color: white;
 }
+
+.card {
+  overflow:hidden;
+  background: #ddd;
+}
+
+.card-image > img {
+  width:100%;
+}
+
+body {
+  color: #ccc;
+}
+
+a {
+  font-weight:bold;
+}
