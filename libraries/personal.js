@@ -82,6 +82,18 @@ function rand (min, max) {
     return Math.random() * (max-min) + min;
 }
 
+
+/**
+ * @function randInt - Returns a random integer between min (inclusive) and max
+ *
+ * @param  {Integer} min The minimum number on the range
+ * @param  {Integer} max The maximum number on the range
+ * @return {Integer}     A random integer on the range [min, max)
+ */
+function randInt (min, max) {
+  return Math.floor(Math.random() * (max-min) + min);
+}
+
 /**
  * @function avg - Returns the average value of the elements in the list. If
  * given only a list, it will return the average value of the list. Otherwise,
@@ -145,6 +157,34 @@ function max () {
 }
 
 /**
+ * @function range - Returns an iterator.
+ *
+ * @param  {Integer} start    The number to start at, inclusive; The number to end at, starting at 0
+ * @param  {Integer} end      The number to end at, exclusive; null
+ * @param  {Integer} stepSize The increment size
+ */
+function* range (start, end, stepSize=1) {
+  if (isNaN(end)) {
+    end = start;
+    start = 0;
+  }
+  // Check against inifinite loops
+  if (stepSize > 0 && end < start)
+    throw new Error("Range will result in an infinite loop");
+  if (stepSize < 0 && end > start)
+    throw new Error("Range will result in an infinite loop");
+  if (stepSize == 0)
+    throw new Error("Range will result in an infinite loop");
+  // Conduct the appropriate loop
+  if (stepSize > 0)
+    for (let i = start; i < end; i += stepSize)
+      yield i;
+  if (stepSize < 0)
+    for (let i = start; i > end; i += stepSize)
+      yield i;
+}
+
+/**
  * @function round - Rounds the given number to the given number of decimal
  * places
  *
@@ -175,15 +215,42 @@ function relativeCoords (event, element) {
 /**
  * @function drawLine - Draws a line on the provided canvas context
  *
- * @param  {CanvasRenderingContext2D} ctx description
+ * @param  {CanvasRenderingContext2D} ctx The 2D Context of the HTML Canvas
  * @param  {Number} x1  The x value of the start coordinate
- * @param  {Number} x2  The y value of the start coordinate
- * @param  {Number} y1  The x value of the end coordinate
+ * @param  {Number} y1  The y value of the start coordinate
+ * @param  {Number} x2  The x value of the end coordinate
  * @param  {Number} y2  The y value of the end coordinate
+ * @param  {String} [color] The stroke style for the line
  */
-function drawLine(ctx, x1, y1, x2, y2) {
+function drawLine(ctx, x1, y1, x2, y2, color=null) {
+  let oldStrokeStyle = ctx.strokeStyle;
+  if (color != null)
+    ctx.strokeStyle = color;
   ctx.beginPath();
   ctx.moveTo(x1, y1);
   ctx.lineTo(x2, y2);
   ctx.stroke();
+  if (color != null)
+    ctx.strokeStyle = oldStrokeStyle;
+}
+
+/**
+ * @function drawCircle - Draws and fills in a circle on the provided canvas context
+ *
+ * @param  {CanvasRenderingContext2D} ctx The 2D Context of the HTML Canvas
+ * @param  {Number} x       The x value of the center coordinate
+ * @param  {Number} y       The y value of the center coordinate
+ * @param  {Number} r       The radius of the circle
+ * @param  {String} [color] The fill style for the circle
+ */
+function drawCircle(ctx, x, y, r, color=null) {
+  let oldFillStyle = ctx.fillStyle;
+  if (color != null)
+    ctx.fillStyle = color;
+  // Actually Draws the Circle
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, 2 * Math.PI);
+  ctx.fill();
+  if (color != null)
+    ctx.fillStyle = oldFillStyle;
 }
