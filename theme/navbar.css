@@ -42,7 +42,7 @@ html{
     z-index: 2;
     grid-column: menu-start/menu-end;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     align-content: center;
     justify-content: center;
     font-family: montserrat-bold;
@@ -182,8 +182,6 @@ a:hover{
         right :0;
         bottom: 0;
         padding: 1em;
-        /*grid-column: menu-start/menu-end;*/
-        /*grid-row: top-footer/bottom-footer;*/
     }
 
     .tooltip .tooltiptext {
