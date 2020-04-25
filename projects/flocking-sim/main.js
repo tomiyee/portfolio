@@ -14,6 +14,7 @@ let C_FACTOR = 0.04;
 let R_FACTOR = 1.4
 let boids = [];
 let canvas, ctx;
+let fullscreen = false;
 
 window.onload = start;
 
@@ -26,14 +27,21 @@ function start () {
   // Initialize the number of birds
   for (let i = 0; i < NUM_BOIDS; i++)
     boids.push(new Boid());
+
+  window.addEventListener("keydown",keyDownHandler);
   // Begin the update interval
   setInterval (update, 1000/FPS);
 }
 
-
-
 function update () {
   // black background
+  if (fullscreen) {
+    WIDTH = window.innerWidth;
+    HEIGHT = window.innerHeight-1;
+    canvas.height = HEIGHT;
+    canvas.width = WIDTH;
+  }
+
   drawRectangle(0,0,WIDTH, HEIGHT, rgba(0,0,0,1))
   for (let boid of boids) {
     boid.update(boids);
@@ -41,6 +49,35 @@ function update () {
   }
 }
 
+function toggleFullscreen () {
+  fullscreen = !fullscreen;
+  if (fullscreen) {
+    canvas.style.position = "absolute";
+
+    canvas.style.top = 0;
+    canvas.style.left = 0;
+    $('body').append(canvas);
+  }
+  else {
+    canvas.style.position = "static";
+    $('.canvas-container').append(canvas);
+    WIDTH = 900;
+    HEIGHT = 600;
+    canvas.height = HEIGHT;
+    canvas.width = WIDTH;
+  }
+}
+
+
+function keyDownHandler (e) {
+  if (e.keyCode == 70)
+    toggleFullscreen();
+  if (e.keyCode == 82) {
+    boids = [];
+    for (let i = 0; i < NUM_BOIDS; i++)
+      boids.push(new Boid());
+  }
+}
 
 /**
  * @function drawRectangle - Draws a rectangle onto the global ctx variable
@@ -67,7 +104,6 @@ class Boid {
     this.acceleration = new Vector(0,0);
   }
 
-
   /**
    * @function localFlock - Selects and returns a list of all the boids that are
    * within FLOCK_RADIUS pixels from this boid's position on the screen. Does
@@ -85,7 +121,6 @@ class Boid {
     return local;
   }
 
-
   /**
    * @function align - This force represents the tendency that this bird will
    * go in the direction of the average velocity of nearby boids.
@@ -101,7 +136,6 @@ class Boid {
 
     return force.scale(A_FACTOR);
   }
-
 
   /**
    * @function cohesion - This force represents the tendancy that this bird will
@@ -120,7 +154,6 @@ class Boid {
     force.setMax(2)
     return force.scale(C_FACTOR);
   }
-
 
   /**
    * @function repulsion - This force represents the tendancy that this bird will
@@ -141,7 +174,6 @@ class Boid {
     return force.scale(R_FACTOR);
   }
 
-
   /**
    * @function update - Given a list of all the boids in the simulation,
    * determines the boids close to this boid and determines the contributions
@@ -156,6 +188,7 @@ class Boid {
       let forceAlign = this.align(local);
       let forceCohesion = this.cohesion (local);
       let forceRepulsion = this.repulsion (local);
+      // Clear previous acceleration value before applying new forces
       this.acceleration.scale(0);
       this.acceleration.add(forceAlign, true);
       this.acceleration.add(forceCohesion, true);
@@ -176,7 +209,6 @@ class Boid {
     else if (this.position.y < 0)
       this.position.y += HEIGHT;
   }
-
 
   /**
    * @function draw - Draws this boid onto the global canvas using the

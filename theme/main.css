@@ -25,3 +25,12 @@ body {
 a {
   font-weight:bold;
 }
+
+.container {
+  max-width:900px;
+}
+
+p {
+  font-size:18px;
+  line-height:2em;
+}
