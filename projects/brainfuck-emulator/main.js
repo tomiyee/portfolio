@@ -9,6 +9,7 @@ let openBracketPositions;
 let intervalId = null;
 let numStepsPerInterval = 50;
 let stepDelay = 2;
+let prevConsoleText = "";
 
 window.onload = start;
 
@@ -103,27 +104,21 @@ function consoleInputHandler (e) {
     if (memoryPointer >= 0)
       memory[memoryPointer] = val % 256;
     codePosition += 1;
-
+    $('.output').text(prevConsoleText);
     resumeInterpretation();
   }
 }
 
 const codeExamples = {
   "hello_world":
-"Prints \"Hello World\"\n\
-++++++++++[>+>+++>+++++++>++++++++++<<<<-]>>>++.>+.+++++++..+++.<<++.>+++++++++++++++.>.+++.------.--------.<<+.<.",
+"Prints \"Hello World\"\n++++++++++[>+>+++>+++++++>++++++++++<<<<-]>>>++.>+.+++++++..+++.<<++.>+++++++++++++++.>.+++.------.--------.<<+.<.",
 
   "multiply":
 "Give two numbers and the first cell will have \
-the product \n \
-,>,<[->[->+>+<<]>[-<+>]<<]>>>[-<<<+>>>]*",
+the product \n,>,<[->[->+>+<<]>[-<+>]<<]>>>[-<<<+>>>]*",
 
   "fibonacci":
-"Generates the nth Fib Number\n\
-With first two numbers being 1\n\
-Warning: Very slow as fib num gets big\n\
-Output is in first memory cell\n\n\
-,>>+<<-[->[->>+<<]>[->+>+<<]>[-<+>]>[-<<<+>>>]<<<<]>>[-<<+>>]<<.*"
+"Generates the nth Fib Number\nWith first two numbers being 1\nWarning: Very slow as fib num gets big\nOutput is in first memory cell\n\n,>>+<<-[->[->>+<<]>[->+>+<<]>[-<+>]>[-<<<+>>>]<<<<]>>[-<<+>>]<<.*"
 };
 function loadExample (ex) {
   if (ex in codeExamples)
@@ -175,6 +170,8 @@ function requestInput () {
   $('#console-input')
     .attr('disabled', false)
     .focus();
+  prevConsoleText = $('.output').text();
+  $('.output').text(prevConsoleText + "\nInput Requested:");
   stopInterpretation();
 }
 
@@ -316,8 +313,10 @@ function interpret (c) {
   stopInterpretation();
   // Begins the next interval
   intervalId = setInterval(() => {
-    for (let i = 0; i < numStepsPerInterval; i ++)
-      codeInterval();
+    if (intervalId != null)
+      for (let i = 0; i < numStepsPerInterval; i ++)
+        if (intervalId != null)
+          codeInterval();
   }, stepDelay);
 }
 
