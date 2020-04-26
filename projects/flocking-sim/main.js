@@ -2,7 +2,7 @@
 
 const FPS = 30;
 const FLOCK_RADIUS = 50;
-let WIDTH = 900, HEIGHT = 600;
+let WIDTH = 700, HEIGHT = 500;
 
 const BG_COLOR = rgb(0,0,0);
 const BOID_COLOR = rgb(255, 255, 255);
@@ -38,9 +38,12 @@ function update () {
   if (fullscreen) {
     WIDTH = window.innerWidth;
     HEIGHT = window.innerHeight-1;
-    canvas.height = HEIGHT;
-    canvas.width = WIDTH;
+  } else {
+    WIDTH = $('.main-container').width() - 50;
+    HEIGHT = 500;
   }
+  canvas.height = HEIGHT;
+  canvas.width = WIDTH;
 
   drawRectangle(0,0,WIDTH, HEIGHT, rgba(0,0,0,1))
   for (let boid of boids) {
@@ -61,8 +64,8 @@ function toggleFullscreen () {
   else {
     canvas.style.position = "static";
     $('.canvas-container').append(canvas);
-    WIDTH = 900;
-    HEIGHT = 600;
+    WIDTH = $('.main-container').width() - 50;
+    HEIGHT = 500;
     canvas.height = HEIGHT;
     canvas.width = WIDTH;
   }
