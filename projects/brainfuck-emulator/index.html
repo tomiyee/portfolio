@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <title>Theng</title>
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="../../images/fav.png">
+    <!-- Author Meta -->
+    <meta name="author" content="theng">
+    <!-- meta character set -->
+    <meta charset="utf-8">
+    <!-- Fork Awesome and Related -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.1.7/css/fork-awesome.min.css" integrity="sha256-gsmEoJAws/Kd3CjuOQzLie5Q3yshhvmo7YNtBG7aaEY=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- JQuery UI -->
+    <link rel="stylesheet" href="../../libraries/jquery-ui.min.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+
+    <script src="../../libraries/jquery-ui.min.js" charset="utf-8"></script>
+    <!-- Theme -->
+    <link rel="stylesheet" href="../../theme/navbar.css">
+    <link rel="stylesheet" href="../../theme/main.css">
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <div class="navBar">
+      <div class="logo">
+        <a href="../../">THeng</a>
+      </div>
+      <div class="menuItems">
+          <div><a href="../../">Home</a></div>
+          <div class="active"><a href="../">Projects</a></div>
+          <div><a href="../../about">About</a></div>
+      </div>
+      <button class="hamburgerButton" onclick="">
+          <i class="fa fa-bars" style="font-size:24px;color:white"></i>
+      </button>
+      <div class="socials">
+        <!-- LinkedIn -->
+        <div>
+          <a href="https://www.linkedin.com/in/tommy-seng-heng">
+            <div class="tooltip">
+              <i class="fa fa-linkedin" style="font-size:24px;color:white"></i>
+              <span class="tooltiptext">LinkedIn</span>
+            </div>
+          </a>
+        </div>
+        <!-- Github -->
+        <div>
+          <a href="https://github.com/tomiyee">
+            <div class="tooltip">
+              <i class="fa fa-github" style="font-size:24px;color:white"></i>
+              <span class="tooltiptext">GitHub</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero / Top Banner -->
+    <section class='hero has-background-black'>
+      <div class="hero-body">
+        <div class="container center is-size-1">
+          <b style='color:white;'>Brainfuck Emulator</b>
+        </div>
+        <div class="container center">
+          Mar 6, 2019 (<a href="https://github.com/tomiyee/portfolio/tree/master/projects/brainfuck-emulator">Source Code</a>)
+        </div>
+      </div>
+    </section>
+
+    <!-- Start Content -->
+    <section class='section'>
+      <div class="container light-mode"style='max'>
+        <!-- The Canvas with the Flocking Simulator -->
+        <div class="center">
+          <div style='width:700px; margin-bottom: 40px;'>
+              <div class="title">
+                How to Use
+              </div>
+              <p>
+                The top text area is where you enter the brainfuck code. The bottom window is the "Terminal," where the code's output
+                can be seen and inputs can be entered. When you enter inputs, only the first character is considered with 3 exceptions.
+              </p>
+              <p>
+                If the first two characters of the input are <code>'b</code>, <code>'h</code>, or <code>'d</code>, the rest of the
+                input will be interpretted as a binary, hexadecimal, or decimal number respectively.
+              </p>
+              <br>
+              <ul>
+                <li><b>Run Code: </b> Shift + Enter</li>
+                <li><b>Save Code: </b> Ctrl + S </li>
+                <li><b>Interrupt: </b> Ctrl + C </li>
+              </ul>
+
+              <br>
+              <div class="center">
+                <div class="dropdown">
+                <button onclick="document.getElementById('myDropdown').classList.toggle('show');" class="dropbtn">Dropdown</button>
+                <div id="myDropdown" class="dropdown-content">
+                  <a onclick="loadExample('hello_world')">Hello World</a>
+                  <a onclick="loadExample('multiply')">Multiplication</a>
+                  <a onclick="loadExample('fibonacci')">Fibonacci</a>
+                </div>
+
+                <button onclick="$('#dialog').dialog('open')" class="dropbtn">See Memory</button>
+                <div id="dialog" title="Cell Values">
+                  <div class="cell-container">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="center">
+          <div>
+            <table class="editor-container">
+              <td><div class="code-lines"></div></td>
+              <td><textarea id="editor"></textarea></td>
+            </table>
+            <div class="output"></div>
+            <div class="input-container">
+              <input id="console-input" type="text" value="">
+            </div>
+          </div>
+
+        </div>
+        <br>
+        <div class="center">
+          <table class='command-table'>
+            <tr>
+              <td>&gt;</td>
+              <td>increment the data pointer (to point to the next cell to the right).</td>
+            </tr>
+            <tr>
+              <td>&lt;</td>
+              <td>decrement the data pointer (to point to the next cell to the left).</td>
+            </tr>
+            <tr>
+              <td>+</td>
+              <td>increment (increase by one) the byte at the data pointer.</td>
+            </tr>
+            <tr>
+              <td>-</td>
+              <td>decrement (decrease by one) the byte at the data pointer.</td>
+            </tr>
+            <tr>
+              <td>.</td>
+              <td>output the byte at the data pointer.</td>
+            </tr>
+            <tr>
+              <td>,</td>
+              <td>output the byte at the data pointer.</td>
+            </tr>
+            <tr>
+              <td>[</td>
+              <td>
+                if the byte at the data pointer is zero, then instead of
+                moving the instruction pointer to the next command, jump to the
+                command after the matching ].
+              </td>
+            </tr>
+            <tr>
+              <td>]</td>
+              <td>
+                if the byte at the data pointer is non-zero, then instead
+                of moving the instruction pointer forward to the next command,
+                jump it back to the command after the matching [ .
+              </td>
+            </tr>
+            <tr>
+              <td>*</td>
+              <td>
+                (my own addition), prints the contents of memory to the console,
+                which you can open with Ctrl + Shift + J on Windows.
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </section>
+    <!-- End Content -->
+
+    <script src="../../libraries/personal.js" charset="utf-8"></script>
+    <script src="./main.js" charset="utf-8"></script>
+  </body>
+</html>

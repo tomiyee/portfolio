@@ -13,11 +13,11 @@
 }
 
 body {
-    background: #141414;
+    background: #252525;
     z-index:0;
 }
 html{
-    background: #141414;
+    background: #252525;
     overflow-y:auto;
 }
 .navBar {

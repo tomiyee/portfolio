@@ -27,7 +27,6 @@ a {
 }
 
 .container {
-  max-width:900px;
   border-radius:5px;
   padding:40px;
   padding-top:20px;
@@ -62,4 +61,8 @@ p {
 .light-mode {
   background:white;
   color:black;
+}
+
+.hamburgerButton {
+  cursor:pointer;
 }
