@@ -55,6 +55,14 @@ Brainfuck simply requires one to break commands into microscopic steps.
       jump it back to the command after the matching [ command.
     </td>
   </tr>
+  <tr>
+    <td>*</td>
+    <td>
+      (my custom addition) prints the contents of memory to the browser
+      console (not on-screen console), which you can open with Ctrl +
+      Shift + J on Windows.
+    </td>
+  </tr>
 </table>
 
 ## Context
