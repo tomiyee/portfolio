@@ -98,6 +98,8 @@ def interpret (code):
     print(output)
 
 
+# running interpretter.py
+
 if __name__ == '__main__':
 
     argv = sys.argv[1:]
@@ -110,10 +112,8 @@ if __name__ == '__main__':
     for opt, arg in opts:
         if opt in ('-f', '--file'):
             file = arg
+    # Reads the contents of the file provided
     if file:
         code = open(file,'r').read()
-
+    # Interprets the code
     interpret(code)
-
-
-open('fib.bf', 'r').read()
