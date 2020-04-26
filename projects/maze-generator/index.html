@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <title>Theng</title>
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="../../images/fav.png">
+    <!-- Author Meta -->
+    <meta name="author" content="theng">
+    <!-- meta character set -->
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.1.7/css/fork-awesome.min.css" integrity="sha256-gsmEoJAws/Kd3CjuOQzLie5Q3yshhvmo7YNtBG7aaEY=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- JQuery UI -->
+    <script src="../../libraries/jquery-ui.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="../../libraries/jquery-ui.min.css">
+    <link rel="stylesheet" href="../../libraries/ui-darkness-theme.css">
+    <!-- Theme -->
+    <link rel="stylesheet" href="../../theme/navbar.css">
+    <link rel="stylesheet" href="../../theme/main.css">
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <div class="navBar">
+      <div class="logo">
+        <a href="">THeng</a>
+      </div>
+      <div class="menuItems">
+          <div><a href="../../">Home</a></div>
+          <div class="active"><a href="../">Projects</a></div>
+          <div><a href="../../about">About</a></div>
+      </div>
+      <button class="hamburgerButton" onclick="">
+          <i class="fa fa-bars" style="font-size:24px;color:white"></i>
+      </button>
+      <div class="socials">
+        <!-- LinkedIn -->
+        <div>
+          <a href="https://www.linkedin.com/in/tommy-seng-heng">
+            <div class="tooltip">
+              <i class="fa fa-linkedin" style="font-size:24px;color:white"></i>
+              <span class="tooltiptext">LinkedIn</span>
+            </div>
+          </a>
+        </div>
+        <!-- Github -->
+        <div>
+          <a href="https://github.com/tomiyee">
+            <div class="tooltip">
+              <i class="fa fa-github" style="font-size:24px;color:white"></i>
+              <span class="tooltiptext">GitHub</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero / Top Banner -->
+    <section class='hero has-background-black'>
+      <div class="hero-body">
+        <div class="container center is-size-1">
+          <b style='color:white;'>Maze Generator</b>
+        </div>
+      </div>
+    </section>
+
+    <!-- Start Content -->
+    <section class='section'>
+      <div class="container center">
+        <canvas id="maze-canvas" width="300" height="300"></canvas>
+      </div>
+    </section>
+    <!-- End Content -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="../../libraries/personal.js" charset="utf-8"></script>
+    <script src="main.js" charset="utf-8"></script>
+  </body>
+</html>
