@@ -109,11 +109,13 @@
                   <a onclick="loadExample('multiply')">Multiplication</a>
                   <a onclick="loadExample('fibonacci')">Fibonacci</a>
                 </div>
-
+                <!-- The Memory Button and the Corresponding Memory Popup -->
                 <button onclick="$('#dialog').dialog('open')" class="dropbtn">See Memory</button>
                 <div id="dialog" title="Cell Values">
                   <div class="cell-container"></div>
                 </div>
+                <!-- The Run Code Button and the Corresponding Memory Popup -->
+                <button onclick="interpret($('#editor').val())" class="dropbtn">Run Code</button>
               </div>
             </div>
           </div>
