@@ -5,7 +5,7 @@
     <!-- Favicon-->
     <link rel="shortcut icon" href="../../images/fav.png">
     <!-- Author Meta -->
-    <meta name="author" content="theng">
+    <meta name="author" content="Theng">
     <!-- meta character set -->
     <meta charset="utf-8">
     <!-- Fork Awesome and Related -->
@@ -28,7 +28,7 @@
     <!-- Navigation Bar -->
     <div class="navBar">
       <div class="logo">
-        <a href="../../">THeng</a>
+        <a href="../../">Theng</a>
       </div>
       <div class="menuItems">
           <div><a href="../../">Home</a></div>
@@ -78,9 +78,73 @@
         <!-- The Canvas with the Flocking Simulator -->
         <div class="center">
           <div style='width:700px; margin-bottom: 40px;'>
-              <div class="title">
-                How to Use
+              <div class="title">What is Brainfuck?</div>
+              <p style="text-indent: 0px;">
+                According to the <a style='text-decoration:underline;' href="https://en.wikipedia.org/wiki/Brainfuck">Brainfuck Wikipedia page</a>:
+              </p>
+              <p>
+                "Brainfuck is an esoteric programming language created in 1993 by
+                Urban Müller, and is notable for its extreme minimalism.
+              </p>
+              <p>
+                The language consists of only eight simple commands and an
+                instruction pointer. While it is fully Turing complete, it is not
+                intended for practical use, but to challenge and amuse programmers.
+                Brainfuck simply requires one to break commands into microscopic steps."
+              </p>
+              <div class="center">
+                <table class='command-table'>
+                  <tr>
+                    <td>&gt;</td>
+                    <td>increment the data pointer (to point to the next cell to the right).</td>
+                  </tr>
+                  <tr>
+                    <td>&lt;</td>
+                    <td>decrement the data pointer (to point to the next cell to the left).</td>
+                  </tr>
+                  <tr>
+                    <td>+</td>
+                    <td>increment (increase by one) the byte at the data pointer.</td>
+                  </tr>
+                  <tr>
+                    <td>-</td>
+                    <td>decrement (decrease by one) the byte at the data pointer.</td>
+                  </tr>
+                  <tr>
+                    <td>.</td>
+                    <td>output the byte at the data pointer.</td>
+                  </tr>
+                  <tr>
+                    <td>,</td>
+                    <td>output the byte at the data pointer.</td>
+                  </tr>
+                  <tr>
+                    <td>[</td>
+                    <td>
+                      if the byte at the data pointer is zero, then instead of
+                      moving the instruction pointer to the next command, jump to the
+                      command after the matching ].
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>]</td>
+                    <td>
+                      if the byte at the data pointer is non-zero, then instead
+                      of moving the instruction pointer forward to the next command,
+                      jump it back to the command after the matching [ .
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>*</td>
+                    <td>
+                      (my custom addition) prints the contents of memory to the browser
+                      console (not on-screen console), which you can open with Ctrl +
+                      Shift + J on Windows.
+                    </td>
+                  </tr>
+                </table>
               </div>
+              <div class="title">How to Use the Emulator</div>
               <p>
                 The top text area is where you enter the brainfuck code. The bottom window is the "Terminal," where the code's output
                 can be seen and inputs can be entered. When you enter inputs, only the first character is considered with 3 exceptions.
@@ -134,58 +198,6 @@
 
         </div>
         <br>
-        <div class="center">
-          <table class='command-table'>
-            <tr>
-              <td>&gt;</td>
-              <td>increment the data pointer (to point to the next cell to the right).</td>
-            </tr>
-            <tr>
-              <td>&lt;</td>
-              <td>decrement the data pointer (to point to the next cell to the left).</td>
-            </tr>
-            <tr>
-              <td>+</td>
-              <td>increment (increase by one) the byte at the data pointer.</td>
-            </tr>
-            <tr>
-              <td>-</td>
-              <td>decrement (decrease by one) the byte at the data pointer.</td>
-            </tr>
-            <tr>
-              <td>.</td>
-              <td>output the byte at the data pointer.</td>
-            </tr>
-            <tr>
-              <td>,</td>
-              <td>output the byte at the data pointer.</td>
-            </tr>
-            <tr>
-              <td>[</td>
-              <td>
-                if the byte at the data pointer is zero, then instead of
-                moving the instruction pointer to the next command, jump to the
-                command after the matching ].
-              </td>
-            </tr>
-            <tr>
-              <td>]</td>
-              <td>
-                if the byte at the data pointer is non-zero, then instead
-                of moving the instruction pointer forward to the next command,
-                jump it back to the command after the matching [ .
-              </td>
-            </tr>
-            <tr>
-              <td>*</td>
-              <td>
-                (my custom addition) prints the contents of memory to the browser
-                console (not on-screen console), which you can open with Ctrl +
-                Shift + J on Windows.
-              </td>
-            </tr>
-          </table>
-        </div>
       </div>
     </section>
     <!-- End Content -->

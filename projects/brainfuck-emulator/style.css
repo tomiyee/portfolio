@@ -45,12 +45,13 @@ table,tr,td {
   margin:0;
   vertical-align: top;
 }
+
 .command-table {
-  width:700px;
+  max-width:700px;
   border:2px solid #bbb;
 }
 .command-table tr td{
-  padding:10px;
+  padding:6px;
 }
 .command-table tr td:nth-child(1) {
   font-weight:bold;
