@@ -41,7 +41,7 @@ function start () {
   updateModelGuess();
 
   // All the JQuery stuff
-  $(".tabs").tabs();
+  $(".jquery-tabs").tabs();
   $( "#dialog-confirm" ).dialog().dialog('close');
   $('.training-progress-bar-space').hide();
   $('.training-progress-bar').progressbar({value:0});
@@ -125,13 +125,15 @@ async function clickHandler (opt) {
  * model variable
  */
 function initModel () {
+  // We will construct a very simple Neural Network with the layers
+  // (3 nodes) -> (6 nodes) -> (1 node)
+  // The output will be 0 if the given rgb values suit white text
+
   model = Sequential();
-  // The single hidden layer
-  const layer1 = Dense({inputShape:[3], units:6, useBias:true, activation:'relu'});
-  // The single output layer
-  const layer2 = Dense({units:1, useBias:true, activation: 'sigmoid'});
-  model.add(layer1);
-  model.add(layer2);
+  // The hidden layer (6 nodes)
+  model.add(Dense({inputShape:[3], units:6, useBias:true, activation:'relu'}));
+  // The output layer (1 node)
+  model.add(Dense({units:1, useBias:true, activation: 'sigmoid'}));
   // Compile the model
   model.compile({
     optimizer: 'adam',
@@ -151,10 +153,11 @@ function initModel () {
  * @param  {tf.tensor2d} [labels] - A list of sample labels
  * @param  {Number} [e=20]     (Def. 50) Number of Epochs to train
  */
-async function trainModel (inputs, labels, e) {
+async function trainModel (inputs, labels, epochs=100) {
 
   // Hides the decision space, and shows the progress bar
   $('.decision-space').hide();
+  $('.data-container').hide();
   $('.training-progress-bar-space').show();
   $('.train-button').attr('disabled', true);
 
@@ -165,7 +168,6 @@ async function trainModel (inputs, labels, e) {
   }
   // Training Hyperparameters
   const batchSize = 20;
-  const epochs = e || 50;
 
   // Every time we begin training, we will update the progressbar accordingly
   let callbacks = {
@@ -195,6 +197,7 @@ async function trainModel (inputs, labels, e) {
   // Hides the progressbar and shows the decision space
   $('.training-progress-bar-space ').hide();
   $('.decision-space').show();
+  $('.data-container').show();
   $('.train-button').attr('disabled', false);
 }
 
