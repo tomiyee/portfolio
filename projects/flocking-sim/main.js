@@ -18,6 +18,9 @@ let fullscreen = false;
 
 window.onload = start;
 
+/**
+ * start - Runs when the window finishes loading
+ */
 function start () {
   // Initialize the global canvas and context objects
   canvas = document.getElementById("canvas");
@@ -33,6 +36,9 @@ function start () {
   setInterval (update, 1000/FPS);
 }
 
+/**
+ * update - Runs every couple milliseconds
+ */
 function update () {
   // black background
   if (fullscreen) {
