@@ -39,10 +39,9 @@ class Pipe {
   }
 
   /**
-   * update - description
+   * update - The pipe's update function
    *
-   * @param  {type} timestep=1 description
-   * @return {type}            description
+   * @param  {number} timestep=1 Number of seconds that passed since last call
    */
   update (timestep=1) {
     this.x -= this.speed * timestep;
@@ -89,7 +88,7 @@ class Bird {
 
     // Bird Related Constants
     /** @private */
-    this.radius = 10;
+    this.radius = 15;
     /** @private */
     this.jumpSpeed = game.jumpSpeed;
 
@@ -101,12 +100,10 @@ class Bird {
     this.dead = false;
   }
 
-  /** @type {number} y - Calculates the y value of the bird as dist from top */
+  /** @type {number} */
   get y () {
     // The bird reached the bottom or top
     if (this._y >= this.game.height - this.radius)
-      return this._y = this.game.height - this.radius;
-    if (this._y <= this.radius)
       return this._y = this.game.height - this.radius;
 
     // Calculate the y using the terminal valocity stuff
@@ -127,6 +124,12 @@ class Bird {
     // Calculate the y using the original acceleration parameters
     this._y = 1/2 * this.game.gravity * this.t**2 + this.v0 * this.t + this.y0;
     return this._y;
+  }
+
+  get v () {
+    // Calculate the y using the terminal valocity stuff
+    return this.game.gravity * this.t + this.v0 < this.game.terminalVelocity ?
+      this.game.gravity * this.t + this.v0 : this.game.terminalVelocity;
   }
 
   /**
@@ -164,7 +167,7 @@ class Bird {
   }
 
   /**
-   * @function onScore - If the bird is not dead, increment the score
+   * onScore - If the bird is not dead, increment the score
    */
   onScore () {
     if (!this.dead)
@@ -172,7 +175,7 @@ class Bird {
   }
 
   /**
-   * @function getScore - Returns the number of pipes this bird has passed.
+   * getScore - Returns the number of pipes this bird has passed.
    *
    * @return {number}  This bird's score
    */
@@ -181,31 +184,40 @@ class Bird {
   }
 
   /**
-   * @function update - Updates the bird
+   * update - Updates the bird
    *
-   * @param  {type} timestep=1 How large of a time step to take
-   * @return {type}            description
+   * @param  {number} timestep=1 How large of a time step to take
    */
   update (timestep=1) {
     this.t += timestep;
     if (this.y > this.game.height - this.radius)
       this.die();
+    if (this.y <= this.radius)
+      return this.die();
     for (let i = 0; i < this.game.pipes.length; i++)
       if (this.collides(this.game.pipes[i]))
         this.die();
   }
 
   /**
-   * @function draw - Draws the bird onto the saved context variables
+   * draw - Draws the bird onto the saved context variables
    */
   draw () {
+    // Use the Spritesheet
+    if (this.game.useSpritesheet) {
+      // scales the sprite to more closely fit the circle used for collisions
+      let scale = 1.4;
+      this.ctx.drawImage(this.game._spritesheet, 58, 488, 18, 18,
+        this.x-this.radius*scale, this.y-this.radius*scale,this.radius*2*scale, this.radius*2*scale);
+      return;
+    }
     const color = this.dead ? 'gray' : 'yellow';
     drawCircle(this.ctx, this.x, this.y, this.radius+1, 'black');
     drawCircle(this.ctx, this.x, this.y, this.radius, color);
   }
 
   /**
-   * @function die - Handles on death events like updating
+   * die - Handles on death events like updating
    */
   die () {
     this.dead = true;
@@ -224,26 +236,26 @@ class FlappyBirdGame {
   /**
    * Creates a game of Flappy Bird
    *
-   * @param  {type} canvas=null description
+   * @param  {HTMLElement} canvas=null The html canvas to render the game
    */
   constructor (canvas=null) {
     // Loads the Game Constants
     this._width = 600;            // px
     this._height = 450;           // px
-    this.autoReset = false;
-    this.useSpritesheet = true;
-    this.spritesheetSrc = 'images/flappy-bird-spritesheets.png';
+    this._autoReset = false;
+    this._useSpritesheet = true;
+    this._spritesheetSrc = 'images/flappy-bird-spritesheets.png';
     // Initialize Game Variables
     this.t = 0;
     this.gameStarted = false;
-    this.intervalId = null;
+    this._intervalId = null;
     this.updateListeners = {};
     this.renderListeners = {};
     // List of birds and pipes
     this.birds = [];
     this.pipes = [];
     // Bird Constants
-    this.gravity = this.g = 700;  // px / sec^2
+    this._gravity = 700;  // px / sec^2
     this.jumpSpeed = 250;         // px / sec
     this.terminalVelocity = 300;  // px / sec
     this._birdX = 50;             // px
@@ -265,7 +277,7 @@ class FlappyBirdGame {
     this._spritesheet.src = this.spritesheetSrc;
   }
 
-  /** @type {number} pipeSpeed */
+  /** @type {number} */
   set pipeSpeed (pipeSpeed) {
     for (let i in this.pipes)
       this.pipes[i].speed = pipeSpeed;
@@ -275,7 +287,7 @@ class FlappyBirdGame {
     return this._pipeSpeed;
   }
 
-  /** @type {number} width */
+  /** @type {number} */
   set width (w) {
     this.canvas.width = w;
     this._width = w;
@@ -284,7 +296,7 @@ class FlappyBirdGame {
     return this._width;
   }
 
-  /** @type {number} height */
+  /** @type {number} */
   set height (h) {
     this.canvas.height = h;
     this._height = h;
@@ -293,7 +305,7 @@ class FlappyBirdGame {
     return this._height;
   }
 
-  /** @type {number} pipeWidth */
+  /** @type {number} */
   set pipeWidth (pipeWidth) {
     for (let i in this.pipes)
       this.pipes[i].width = pipeWidth;
@@ -303,11 +315,43 @@ class FlappyBirdGame {
     return this._pipeWidth;
   }
 
+  /** @type {boolean} */
+  set autoReset (autoReset) {
+    this._autoReset = autoReset;
+  }
+  get autoReset () {
+    return this._autoReset;
+  }
+
+  /** @type {string} */
+  set spritesheetSrc (spritesheetSrc) {
+    this._spritesheetSrc = spritesheetSrc;
+  }
+  get spritesheetSrc () {
+    return this._spritesheetSrc;
+  }
+
+  /** @type {boolean} */
+  set useSpritesheet (useSpritesheet) {
+    this._useSpritesheet = useSpritesheet;
+  }
+  get useSpritesheet () {
+    return this._useSpritesheet;
+  }
+
+  /** @type {boolean} */
+  set gravity (g) {
+    this._gravity = g;
+  }
+  get gravity () {
+    return this._gravity;
+  }
+
   /**
-   * @function addBird - Adds the given number of birds
+   * addBird - Adds the given number of birds
    *
-   * @param  {type} n=1 description
-   * @return {type}     description
+   * @param  {number} n=1 The number of birds to add
+   * @return {number}     The number of birds in the game
    */
   addBird (n=1) {
     for (let i = 0; i < n; i++) {
@@ -318,7 +362,7 @@ class FlappyBirdGame {
   }
 
   /**
-   * @function addPipe - Adds a pipe to enter from the right side of the canvas
+   * addPipe - Adds a pipe to enter from the right side of the canvas
    */
   addPipe () {
     let p = new Pipe(this, this.canvas, this.ctx);
@@ -328,17 +372,17 @@ class FlappyBirdGame {
   }
 
   /**
-   * @function getBird - description
+   * getBird - Returns the bird that is at index i
    *
-   * @param  {type} i description
-   * @return {type}   description
+   * @param  {number} i The bird's index
+   * @return {Bird}   The bird
    */
   getBird (i) {
     return this.birds[i];
   }
 
   /**
-   * @function getBirdScore - Returns the score of the bird at index i
+   * getBirdScore - Returns the score of the bird at index i
    *
    * @param  {number} i=0 The index of the bird
    * @return {number}     The score of the bird at index i
@@ -350,15 +394,14 @@ class FlappyBirdGame {
   }
 
   /**
-   * update -
+   * update -  The game's update function
    *
-   * @param  {type} timestep=1 The size of the time step for the update fn
-   * @param  {type} draw=true
+   * @param  {number} timestep=1 The number of seconds that have passed
    */
-  update (timestep=1, draw=true) {
+  update (timestep=1) {
     if (!this.gameStarted)
       return;
-    // Spawn a new pipe if enough timesteps have elapsed
+    // Spawn a new pipe if enough time has elapsed
     if (((this.t+timestep) % this.pipeDelay) < (this.t % this.pipeDelay))
       this.addPipe();
     // Increment the computer's timestep
@@ -430,8 +473,6 @@ class FlappyBirdGame {
 
   /**
    * startGame - Begins key inputs and stuff
-   *
-   * @return {type}  description
    */
   startGame () {
     this.gameStarted = true;
@@ -440,29 +481,29 @@ class FlappyBirdGame {
   /**
    * start - Starts the game loop
    *
-   * @param  {type} fps=60 Number of frames per second to render the game at
+   * @param  {number} fps=60 Number of frames per second to render the game at
    */
-  start (fps=60) {
-    if (this.intervalId != null)
+  startGameLoop (fps=60) {
+    if (this._intervalId != null)
       return console.warn('Game loop already in progress.');
-    this.intervalId = setInterval (() => {
+    this._intervalId = setInterval (() => {
       this.update(1/fps);
       this.draw();
     });
   }
 
   /**
-   * @function pause - Pauses the game loop
+   * pause - Pauses the game loop
    */
-  pause () {
-    if (this.intervalId == null)
+  pauseGameLoop () {
+    if (this._intervalId == null)
       return console.warn("No game loop to pause.");
-    clearInterval (this.intervalId);
+    clearInterval (this._intervalId);
   }
-  stop () {this.pause ();}
+  stopGameLoop () {this.pauseGameLoop();}
 
   /**
-   * @function addUpdateListener - Adds the event listener which will get called
+   * addUpdateListener - Adds the event listener which will get called
    * on every update, and returns the id associated with the fn
    *
    * @param  {updateCallback} fn The event handler which takes 1 parameter: a game instance
@@ -477,7 +518,7 @@ class FlappyBirdGame {
   }
 
   /**
-   * @function removeUpdateListener - Removes the event listener with the
+   * removeUpdateListener - Removes the event listener with the
    * provided id from the list of update listeners
    *
    * @param  {number} fnIndex The id of the callback function to remove
@@ -489,7 +530,7 @@ class FlappyBirdGame {
   }
 
   /**
-   * @function addRenderListener - Adds the event listener which will get called
+   * addRenderListener - Adds the event listener which will get called
    * on every render, and returns the id associated with the fn
    *
    * @param  {renderCallback} fn The event handler which takes 1 parameter: a game instance
@@ -504,7 +545,7 @@ class FlappyBirdGame {
   }
 
   /**
-   * @function removeRenderListener - Removes the event listener with the
+   * removeRenderListener - Removes the event listener with the
    * provided id from the list of render listeners
    *
    * @param  {number} fnIndex the id of the callback function to remove
