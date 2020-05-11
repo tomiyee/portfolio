@@ -82,7 +82,6 @@ function rand (min, max) {
     return Math.random() * (max-min) + min;
 }
 
-
 /**
  * @function randInt - Returns a random integer between min (inclusive) and max
  *
