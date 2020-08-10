@@ -62,10 +62,10 @@
     <section class='hero has-background-black'>
       <div class="hero-body">
         <div class="container center is-size-1">
-          <b style='color:white;'>Template Title</b>
+          <b style='color:white;'>Minecraft, but it Beeps in Pain</b>
         </div>
         <div class="center">
-          Date (<a href="https://github.com/tomiyee/portfolio/tree/master/projects/template">Source Code</a>)
+          Aug 9, 2020 (<a href="https://github.com/tomiyee/minecraft-dmg-buzzer">Source Code</a>)
         </div>
       </div>
     </section>
@@ -73,6 +73,32 @@
     <!-- Start Content -->
     <section class='section'>
       <div class="container light-mode" style='max-width:800px;'>
+        <h1>Minecraft Damage Buzzer Plugin!</h1>
+
+        <p>
+          Have you ever wanted to hear your Minecraft character <b>scream</b>
+          whenever it takes damage? Well say no more! I've made a piezoelectric
+          buzzer scream everytime you get hurt! Check out the demo below!
+        </p>
+
+        <br>
+        <!-- Video Demonstration of the Minecraft Plugin -->
+        <center>
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/gWROjQkrfDo"
+          frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+        </center>
+
+        <br>
+
+        <p>
+          This Minecraft Java Plugin I made sends POST requests to a node.js
+          web server hosted on a Raspberry Pi 4 whenever a player takes damage.
+          The web server counts the amount of damage taken and serves it on a
+          GET request. An ESP32 with a buzzer is sending repeated GET requests
+          to the same server waiting for this number to change. The ESp32 will
+          acivate the buzzer briefly whenever a change is detected.
+        </p>
 
       </div>
     </section>
