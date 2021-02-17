@@ -90,6 +90,11 @@ html{
 
 }
 
+.menuItems div:nth-child(3) {
+  display:none;
+  width:0;
+}
+
 .socials {
     z-index: 2;
     grid-column: social-start/social-end;
